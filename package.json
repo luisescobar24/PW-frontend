@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://luisescobar24.github.io/PW",
+  "homepage": "https://luisescobar24.github.io/PW-frontend",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
