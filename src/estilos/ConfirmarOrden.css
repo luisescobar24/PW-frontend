@@ -1,0 +1,213 @@
+/* ConfirmarOrden.css Mejorado */
+
+/* Fondo oscuro semi-transparente que cubre toda la pantalla */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(120deg, rgba(0,0,0,0.7) 60%, rgba(30,30,60,0.7) 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.4s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Contenedor del contenido del modal */
+.modal-content {
+  background: linear-gradient(120deg, #232526 60%, #414345 100%);
+  padding: 32px 36px;
+  border-radius: 14px;
+  width: 370px;
+  max-width: 95vw;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.35);
+  position: relative;
+  animation: slideDown 0.5s;
+}
+
+@keyframes slideDown {
+  from { transform: translateY(-40px); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
+}
+
+/* Botón de cerrar (la X) */
+.close {
+  position: absolute;
+  top: 14px;
+  right: 18px;
+  font-size: 22px;
+  font-weight: bold;
+  color: #bbb;
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.2s;
+  background: none;
+  border: none;
+}
+
+.close:hover {
+  color: #ff4d4f;
+  transform: scale(1.15);
+}
+
+/* Titular del modal */
+.modal-content h2 {
+  margin-bottom: 18px;
+  font-weight: 700;
+  text-align: center;
+  color: #fff;
+  letter-spacing: 1px;
+}
+
+/* Etiquetas */
+.modal-content label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 500;
+  color: #c7c7c7;
+  letter-spacing: 0.5px;
+}
+
+/* Inputs del formulario */
+.modal-content input[type="text"] {
+  width: 100%;
+  padding: 9px 12px;
+  margin-bottom: 16px;
+  border: 1.5px solid #444;
+  background: #23272f;
+  color: #f3f3f3;
+  border-radius: 6px;
+  font-size: 15px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  outline: none;
+}
+
+.modal-content input[type="text"]:focus {
+  border-color: #00bfff;
+  box-shadow: 0 0 0 2px #00bfff33;
+}
+
+/* Botón de proceder */
+#proceed {
+  width: 100%;
+  padding: 12px 0;
+  background: linear-gradient(90deg, #00bfff 60%, #007bff 100%);
+  border: none;
+  border-radius: 7px;
+  color: #fff;
+  font-size: 17px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+  margin-top: 8px;
+  box-shadow: 0 2px 8px #007bff22;
+}
+
+#proceed:hover {
+  background: linear-gradient(90deg, #007bff 60%, #00bfff 100%);
+  transform: translateY(-2px) scale(1.03);
+}
+
+/* Resumen de compra */
+.order-summary {
+  background: #23272f;
+  border-radius: 7px;
+  padding: 14px 16px;
+  margin-bottom: 18px;
+  box-shadow: 0 1px 4px #0002;
+}
+
+.order-summary h3 {
+  color: #00bfff;
+  margin-bottom: 10px;
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.order-summary ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 8px 0;
+}
+
+.order-summary li {
+  color: #e0e0e0;
+  font-size: 15px;
+  margin-bottom: 5px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.order-summary strong {
+  color: #fff;
+}
+
+/* Éxito de compra */
+.purchase-success {
+  text-align: center;
+  padding: 24px 10px;
+  animation: fadeIn 0.5s;
+}
+
+.purchase-success .checkmark {
+  font-size: 56px;
+  color: #28e07b;
+  margin-bottom: 16px;
+  animation: pop 0.5s;
+}
+
+@keyframes pop {
+  0% { transform: scale(0.7); opacity: 0; }
+  80% { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(1); }
+}
+
+.purchase-success h2 {
+  color: #28e07b;
+  margin-bottom: 12px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.purchase-success p {
+  color: #c7c7c7;
+  font-size: 16px;
+  margin-bottom: 18px;
+}
+
+.purchase-success button {
+  background: linear-gradient(90deg, #00bfff 60%, #007bff 100%);
+  border: none;
+  border-radius: 7px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 10px 24px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.purchase-success button:hover {
+  background: linear-gradient(90deg, #007bff 60%, #00bfff 100%);
+  transform: scale(1.04);
+}
+
+/* Responsivo */
+@media (max-width: 480px) {
+  .modal-content {
+    padding: 18px 6vw;
+    width: 98vw;
+    min-width: unset;
+  }
+  .order-summary {
+    padding: 10px 4vw;
+  }
+}
+
