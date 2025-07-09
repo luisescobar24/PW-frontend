@@ -21,7 +21,7 @@ import EliminarNoticia from './pages/EliminarNoticia';
 
 createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <BrowserRouter basename="/PW-Frontend">
+    <BrowserRouter basename="/PW-frontend">
       <Routes>
       <Route path="/" element={<SignIn />} />
       <Route path="/signup" element={<SignUp />} />
