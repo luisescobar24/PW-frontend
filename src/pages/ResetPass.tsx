@@ -12,9 +12,10 @@ const ResetPass = () => {
   const [newPass, setNewPass] = useState('');
   const [confirmNewPass, setConfirmNewPass] = useState('');
   const [message, setMessage] = useState('');
-  const [messageType, setMessageType] = useState<'success' | 'error' | ''>('');
+  const [messageType, setMessageType] = useState<'success' | 'error' | ''>(''); 
   const [loading, setLoading] = useState(false);
   const [step, setStep] = useState(1);
+  const [token, setToken] = useState<string | null>(null); // Guardar token de verificación
   const navigate = useNavigate();
 
   // Función para mostrar mensaje con tipo
@@ -70,9 +71,14 @@ const ResetPass = () => {
           correo: email,
           verificationCode,
         });
-        
-        showMessage(response.data.message, 'success');
-        setStep(3);
+
+        if (response.data.success) {
+          showMessage(response.data.message, 'success');
+          setToken(response.data.token);  // Guardar el token en el estado
+          setStep(3);
+        } else {
+          showMessage('El código de verificación no es válido o ha expirado.', 'error');
+        }
       } catch (error: any) {
         console.error('Error al validar el código de verificación:', error);
         showMessage(error.response?.data.message || 'Error al validar el código', 'error');
@@ -85,7 +91,11 @@ const ResetPass = () => {
         showMessage('Por favor, ingrese una nueva contraseña.', 'error');
         return;
       }
-      
+      if (!confirmNewPass.trim()) {
+        showMessage('Por favor, confirme su nueva contraseña.', 'error');
+        return;
+      }
+
       if (newPass !== confirmNewPass) {
         showMessage('Las contraseñas no coinciden.', 'error');
         return;
@@ -93,6 +103,12 @@ const ResetPass = () => {
 
       if (newPass.length < 6) {
         showMessage('La contraseña debe tener al menos 6 caracteres.', 'error');
+        return;
+      }
+
+      // Si el token no existe o ha expirado, evitar cambiar la contraseña
+      if (!token) {
+        showMessage('El token ha expirado. Solicita un nuevo código de verificación.', 'error');
         return;
       }
 
@@ -107,12 +123,12 @@ const ResetPass = () => {
           newPassword: newPass,
           confirmNewPassword: confirmNewPass,
         });
-        
+
         showMessage(response.data.message, 'success');
         
         // Opcional: redirigir después de un tiempo
         setTimeout(() => {
-          navigate('/login');
+          navigate('/');
         }, 3000);
       } catch (error: any) {
         console.error('Error al restablecer la contraseña:', error);
@@ -241,6 +257,7 @@ const ResetPass = () => {
                   required
                   minLength={6}
                   autoComplete="new-password"
+                  style={{ color: 'black' }}
                 />
 
                 <label className="reset-label" htmlFor="confirmPassword">
@@ -256,6 +273,7 @@ const ResetPass = () => {
                   required
                   minLength={6}
                   autoComplete="new-password"
+                  style={{ color: 'black' }}
                 />
 
                 <button 

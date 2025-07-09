@@ -47,19 +47,19 @@ const PaginaPrincipal: React.FC = () => {
   useEffect(() => {
     const fetchJuegos = async () => {
       try {
-        // setCargando(true);
         const response = await axios.get(`${URL_BACKEND}api/juegos`, {
           params: {
-            plataformaId: plataformaFiltro, // número o 0
-            categoriaId: categoriaFiltro,   // número o 0
+            plataformaId: plataformaFiltro,
+            categoriaId: categoriaFiltro,
           }
         });
+        console.log('Juegos obtenidos:', response.data); // <-- Agrega esto
         setJuegos(response.data);
       } catch (error) {
         console.error('Error al obtener juegos', error);
       }
+    };
     fetchJuegos();
-    }
   }, [plataformaFiltro, categoriaFiltro]);
 
   // Cargar categorías desde el backend
