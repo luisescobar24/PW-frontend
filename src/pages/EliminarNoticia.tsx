@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const URL = "https://pw-backend-8jnk.onrender.com/"
+const URL_BACKEND = import.meta.env.VITE_BACKEND_URL;
 
 interface EliminarNoticiaProps {
   id: number;
@@ -15,7 +15,7 @@ const EliminarNoticia = ({ id, titulo, onClose, onDeleted }: EliminarNoticiaProp
   const handleDelete = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`${URL}api/noticias/${id}`, {
+      const res = await fetch(`${URL_BACKEND}api/noticias/${id}`, {
         method: 'DELETE',
       });
       if (res.ok) onDeleted();

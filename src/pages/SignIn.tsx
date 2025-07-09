@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios, { AxiosError } from 'axios';  
 import '../estilos/SignIn.css';
 
-const URL = "https://pw-backend-8jnk.onrender.com/"
+const URL_BACKEND = import.meta.env.VITE_BACKEND_URL;
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -18,7 +18,7 @@ const SignIn = () => {
     setLoading(true);  // Start loading when attempting to log in
     try {
       // Send POST request to backend
-      const response = await axios.post(`${URL}api/auth/login`, { correo: username, password });
+      const response = await axios.post(`${URL_BACKEND}api/auth/login`, { correo: username, password });
 
       if (response.data.success) {
         // You can store user data in localStorage or context if needed

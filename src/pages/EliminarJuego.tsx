@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const URL = "https://pw-backend-8jnk.onrender.com/"
+const URL_BACKEND = import.meta.env.VITE_BACKEND_URL;
 
 interface EliminarJuegoProps {
   id: number;            // Recibe el id del juego
@@ -15,7 +15,7 @@ const EliminarJuego = ({ id, juego, onClose, onDeleted }: EliminarJuegoProps) =>
   const handleDelete = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`${URL}api/juegos/${id}`, {
+      const res = await fetch(`${URL_BACKEND}api/juegos/${id}`, {
         method: 'DELETE',
       });
       if (res.ok) {

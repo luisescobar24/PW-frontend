@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../estilos/EditarJuego.css';
 
+
+
 interface Noticia {
   id: number;
   titulo: string;

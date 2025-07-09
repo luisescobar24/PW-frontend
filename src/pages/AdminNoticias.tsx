@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import EliminarNoticia from './EliminarNoticia';
 import '../estilos/AdminJuegos.css';
 
-const URL = "https://pw-backend-8jnk.onrender.com/"
+const URL_BACKEND = import.meta.env.VITE_BACKEND_URL;
 
 interface Imagen {
   url: string;
@@ -25,7 +25,7 @@ const AdminNoticias = () => {
 
   const fetchNoticias = async () => {
     try {
-      const response = await fetch(`${URL}noticias`);
+      const response = await fetch(`${URL_BACKEND}noticias`);
       if (!response.ok) throw new Error('Error al obtener noticias');
       const data = await response.json();
       setNoticias(data);

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../estilos/PaginaPrincipal.css';  // Importa el archivo de estilos
 
-const URL = "https://pw-backend-8jnk.onrender.com/"
+const URL_BACKEND = import.meta.env.VITE_BACKEND_URL;
 
 interface Juego {
   id: number;
@@ -48,7 +48,7 @@ const PaginaPrincipal: React.FC = () => {
     const fetchJuegos = async () => {
       try {
         // setCargando(true);
-        const response = await axios.get(`${URL}api/juegos`, {
+        const response = await axios.get(`${URL_BACKEND}api/juegos`, {
           params: {
             plataformaId: plataformaFiltro, // número o 0
             categoriaId: categoriaFiltro,   // número o 0
@@ -66,7 +66,7 @@ const PaginaPrincipal: React.FC = () => {
   useEffect(() => {
     const fetchCategorias = async () => {
       try {
-        const response = await axios.get(`${URL}api/categorias`);
+        const response = await axios.get(`${URL_BACKEND}api/categorias`);
         setCategorias([{ id: 0, nombre: 'todas' }, ...response.data]); // Agregar 'todas' como opción
       } catch (error) {
         console.error('Error al obtener categorías', error);
@@ -79,7 +79,7 @@ const PaginaPrincipal: React.FC = () => {
   useEffect(() => {
     const fetchPlataformas = async () => {
       try {
-        const response = await axios.get(`${URL}api/plataformas`);
+        const response = await axios.get(`${URL_BACKEND}api/plataformas`);
         setPlataformas([{ id: 0, nombre: 'todas' }, ...response.data]); // Agregar 'todas' como opción
       } catch (error) {
         console.error('Error al obtener plataformas', error);

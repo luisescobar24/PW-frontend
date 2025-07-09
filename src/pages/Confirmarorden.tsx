@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import "../estilos/ConfirmarOrden.css";
 
-const URL = "https://pw-backend-8jnk.onrender.com/"
+const URL_BACKEND = import.meta.env.VITE_BACKEND_URL;
 
 interface ItemCarrito {
   id: number;
@@ -56,7 +56,7 @@ const ventas = carrito.map((item: ItemCarrito) => ({
 
     try {
       // Realizar el POST al backend para registrar las ventas
-      const response = await fetch(`${URL}api/ventas`, {
+      const response = await fetch(`${URL_BACKEND}api/ventas`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ventas })  // Envío de los datos al backend

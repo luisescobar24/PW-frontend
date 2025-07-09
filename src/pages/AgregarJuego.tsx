@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom"; 
 import axios from "axios";
 
-const URL = "https://pw-backend-8jnk.onrender.com/"
+const URL_BACKEND = import.meta.env.VITE_BACKEND_URL;
 
 interface Imagen {
   url: string;
@@ -50,10 +50,10 @@ const AgregarJuego: React.FC<AgregarJuegoProps> = ({ onClose }) => {
   const [subiendoImagen, setSubiendoImagen] = useState(false);
 
   useEffect(() => {
-    fetch(`${URL}api/categorias`)
+    fetch(`${URL_BACKEND}api/categorias`)
       .then((res) => res.json())
       .then((data) => setCategorias(data));
-    fetch(`${URL}api/plataformas`)
+    fetch(`${URL_BACKEND}api/plataformas`)
       .then((res) => res.json())
       .then((data) => setPlataformasDisponibles(data));
   }, []);
@@ -112,7 +112,7 @@ const AgregarJuego: React.FC<AgregarJuegoProps> = ({ onClose }) => {
     e.preventDefault();
     if (validateForm()) {
       try {
-        const response = await fetch(`${URL}api/juegos`, {
+        const response = await fetch(`${URL_BACKEND}api/juegos`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(formData), // Incluye descripcion
@@ -140,7 +140,7 @@ const AgregarJuego: React.FC<AgregarJuegoProps> = ({ onClose }) => {
       formData.append("image", imagenFile); // Añadir la imagen al FormData
 
       // Realizar la solicitud de subida de la imagen al servidor
-      const res = await axios.post(`${URL}api/upload-image`, formData, {
+      const res = await axios.post(`${URL_BACKEND}api/upload-image`, formData, {
         headers: { "Content-Type": "multipart/form-data" }, // Especifica que estamos enviando un archivo
       });
 

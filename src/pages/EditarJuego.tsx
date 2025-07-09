@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import '../estilos/EditarJuego.css';
 
-const URLL = "https://pw-backend-8jnk.onrender.com/"
+const URL_BACKEND = import.meta.env.VITE_BACKEND_URL;
 
 interface Imagen {
   url: string;
@@ -56,7 +56,7 @@ const EditarJuego = ({ juego, onSave }: EditarJuegoProps) => {
   useEffect(() => {
     if (id) {
       setLoading(true);
-      fetch(`${URLL}api/juegos/${id}`)
+      fetch(`${URL_BACKEND}api/juegos/${id}`)
         .then(res => res.json())
         .then(data => {
           const plataformas = Array.isArray(data.plataformas)
@@ -76,14 +76,14 @@ const EditarJuego = ({ juego, onSave }: EditarJuegoProps) => {
   }, [id]);
 
   useEffect(() => {
-    fetch(`${URLL}api/plataformas`)
+    fetch(`${URL_BACKEND}api/plataformas`)
       .then(res => res.json())
       .then(data => setTodasPlataformas(data))
       .catch(() => setTodasPlataformas([]));
   }, []);
 
   useEffect(() => {
-    fetch(`${URLL}api/categorias`)
+    fetch(`${URL_BACKEND}api/categorias`)
       .then(res => res.json())
       .then(data => setTodasCategorias(data))
       .catch(() => setTodasCategorias([]));
@@ -184,7 +184,7 @@ const EditarJuego = ({ juego, onSave }: EditarJuegoProps) => {
       form.append('plataformas', JSON.stringify(plataformasIds)); // <-- solo IDs
       imagenesFiles.forEach(file => form.append('imagenes', file));
       form.append('imagenesAConservar', JSON.stringify(imagenesAConservar));
-      await fetch(`${URLL}api/juegos/${formData.id}`, {
+      await fetch(`${URL_BACKEND}api/juegos/${formData.id}`, {
         method: 'PUT',
         body: form,
       });

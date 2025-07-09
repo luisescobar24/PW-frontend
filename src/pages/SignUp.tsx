@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import '../estilos/SignUp.css';
 
-const URL = "https://pw-backend-8jnk.onrender.com/"
+const URL_BACKEND = import.meta.env.VITE_BACKEND_URL;
 
 const SignUp = () => {
   const [email, setEmail] = useState('');
@@ -42,7 +42,7 @@ const SignUp = () => {
     }
 
     try {
-      const response = await axios.post(`${URL}api/auth/signup`, {
+      const response = await axios.post(`${URL_BACKEND}api/auth/signup`, {
         correo: email,
         password,
         nombre: username,
@@ -67,7 +67,7 @@ const SignUp = () => {
       return;
     }
     try {
-      const response = await axios.post(`${URL}api/auth/verify-code`, {
+      const response = await axios.post(`${URL_BACKEND}api/auth/verify-code`, {
         correo: email,
         verificationCode,
       });

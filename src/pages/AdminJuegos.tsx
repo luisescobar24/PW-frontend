@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import EliminarJuego from './EliminarJuego';
 import '../estilos/AdminJuegos.css';
 
-const URL = "https://pw-backend-8jnk.onrender.com/"
+const URL_BACKEND = import.meta.env.VITE_BACKEND_URL;
 
 interface Categoria {
   id: number;
@@ -39,7 +39,7 @@ const AdminJuegos = () => {
 
   // Cargar juegos desde el backend
   const fetchJuegos = async () => {
-    const res = await fetch(`${URL}api/juegos`);
+    const res = await fetch(`${URL_BACKEND}api/juegos`);
     const data = await res.json();
     const juegosNormalizados = data.map((juego: any) => ({
       ...juego,
@@ -51,7 +51,7 @@ const AdminJuegos = () => {
 
   // Cargar categorías desde el backend
   const fetchCategorias = async () => {
-    const res = await fetch(`${URL}api/categorias`);
+    const res = await fetch(`${URL_BACKEND}api/categorias`);
     const data = await res.json();
     setCategorias(data);
   };
@@ -69,7 +69,7 @@ const AdminJuegos = () => {
   // Eliminar juego
   const eliminarJuego = async () => {
     if (juegoAEliminar) {
-      await fetch(`${URL}api/juegos/${juegoAEliminar.id}`, {
+      await fetch(`${URL_BACKEND}api/juegos/${juegoAEliminar.id}`, {
         method: 'DELETE',
       });
       setMostrarEliminar(false);
