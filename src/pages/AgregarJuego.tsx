@@ -21,11 +21,11 @@ interface Game {
   plataformas: number[];
 }
 
-interface AgregarJuegoProps {
-  onClose: () => void; // Propiedad onClose para manejar el cierre del modal
-}
+// interface AgregarJuegoProps {
+//   onClose: () => void; // Propiedad onClose para manejar el cierre del modal
+// }
 
-const AgregarJuego: React.FC<AgregarJuegoProps> = ({ onClose }) => {
+const AgregarJuego: React.FC = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState<Game>({
     nombre: "",

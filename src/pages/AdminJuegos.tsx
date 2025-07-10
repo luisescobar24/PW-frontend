@@ -106,6 +106,14 @@ const AdminJuegos = () => {
       </aside>
 
       <main className="admin-panel">
+        <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 16 }}>
+          <button
+            style={{ background: '#ff6600', color: '#fff', border: 'none', borderRadius: 4, padding: '8px 16px', cursor: 'pointer', fontWeight: 'bold' }}
+            onClick={() => navigate('/paginaprincipal')}
+          >
+            Volver a Principal
+          </button>
+        </div>
         {/* Categorías filter */}
         <div className="categorias-filter" style={{ marginBottom: 24 }}>
           <button
