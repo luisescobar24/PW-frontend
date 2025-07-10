@@ -82,6 +82,15 @@ const SignUp = () => {
   return (
     <div className="signup-wrapper">
       <div className="signup-container">
+        {/* Botón X para regresar */}
+        <button
+          className="signup-close-btn"
+          style={{ position: 'absolute', top: 20, right: 20, fontSize: '1.5rem', background: 'none', border: 'none', cursor: 'pointer', zIndex: 2 }}
+          onClick={() => navigate(-1)}
+          aria-label="Go back"
+        >
+          ×
+        </button>
         {step === 1 && (
           <>
             <div className="signup-left-side">

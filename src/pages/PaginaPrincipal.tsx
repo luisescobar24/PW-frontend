@@ -383,7 +383,7 @@ const PaginaPrincipal: React.FC = () => {
                 </div>
                 <div className="item-quantity">
                   <button onClick={() => actualizarCantidadCarrito(item.id, item.cantidad - 1)} disabled={item.cantidad <= 1}>-</button>
-                  <span>{item.cantidad}</span>
+                  <span className="item-cantidad">{item.cantidad}</span>
                   <button onClick={() => actualizarCantidadCarrito(item.id, item.cantidad + 1)} disabled={item.cantidad >= 10}>+</button>
                 </div>
                 <div className="item-total">${(item.precio * item.cantidad).toFixed(2)}</div>
