@@ -16,6 +16,13 @@ interface Juego {
   plataformas: number[];  // Lista de plataformas asociadas al juego
 }
 
+interface Noticia {
+  id: number;
+  titulo: string;
+  texto: string;
+  imagenes: { url: string; descripcion?: string }[];
+}
+
 export interface ItemCarrito extends Juego {
   cantidad: number;
 }
@@ -25,11 +32,13 @@ const PaginaPrincipal: React.FC = () => {
 
   // Estados principales
   const [juegos, setJuegos] = useState<Juego[]>([]);
+  const [noticias, setNoticias] = useState<Noticia[]>([]);
   const [carrito, setCarrito] = useState<ItemCarrito[]>(() => {
     const guardado = localStorage.getItem('carrito');
     return guardado ? JSON.parse(guardado) : [];
   });
   const [index, setIndex] = useState(0);
+  const [indexSimilares, setIndexSimilares] = useState(0);
   const [menuCategoriasVisible, setMenuCategoriasVisible] = useState(false);
   const [busqueda, setBusqueda] = useState('');
   const [categoriaFiltro, setCategoriaFiltro] = useState<number>(0);  // 0 = todas
@@ -95,6 +104,64 @@ const PaginaPrincipal: React.FC = () => {
       }
     };
     fetchPlataformas();
+  }, []);
+
+  // Cargar noticias automáticamente - SIEMPRE MOSTRAR NOTICIAS
+  useEffect(() => {
+    const noticiasEjemplo: Noticia[] = [
+      {
+        id: 1,
+        titulo: "Nueva actualización de Cyberpunk 2077",
+        texto: "CD Projekt Red ha lanzado una nueva actualización que mejora significativamente el rendimiento del juego y añade nuevas características. Los jugadores pueden esperar una experiencia más fluida y nuevas misiones secundarias.",
+        imagenes: [{ url: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&h=200&fit=crop", descripcion: "Cyberpunk 2077" }]
+      },
+      {
+        id: 2,
+        titulo: "Steam presenta las ofertas de verano 2025",
+        texto: "Steam ha anunciado sus ofertas de verano con descuentos de hasta el 90% en miles de juegos. La promoción incluye títulos AAA y indies populares que no te puedes perder.",
+        imagenes: [{ url: "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=400&h=200&fit=crop", descripcion: "Steam Sale" }]
+      },
+      {
+        id: 3,
+        titulo: "Nuevo trailer de Elden Ring: Shadow of the Erdtree",
+        texto: "FromSoftware revela más detalles sobre la expansión más esperada del año. El DLC promete nuevas áreas, jefes desafiantes y una historia que expandirá el universo de Elden Ring.",
+        imagenes: [{ url: "https://images.unsplash.com/photo-1493711662062-fa541adb3fc8?w=400&h=200&fit=crop", descripcion: "Elden Ring" }]
+      },
+      {
+        id: 4,
+        titulo: "PlayStation 6: Primeros rumores y especificaciones",
+        texto: "Se filtran las primeras especificaciones técnicas de la próxima consola de Sony. Los rumores apuntan a un hardware revolucionario que promete cambiar la industria de los videojuegos.",
+        imagenes: [{ url: "https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?w=400&h=200&fit=crop", descripcion: "PlayStation" }]
+      },
+      {
+        id: 5,
+        titulo: "Nintendo Direct: Anuncios sorprendentes",
+        texto: "Nintendo sorprende a los fans con anuncios inesperados en su último Direct. Nuevos juegos de franquicias queridas y colaboraciones inéditas que emocionan a la comunidad.",
+        imagenes: [{ url: "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=400&h=200&fit=crop", descripcion: "Nintendo" }]
+      },
+      {
+        id: 6,
+        titulo: "E-Sports: Championship Mundial 2025",
+        texto: "Se acerca el torneo más importante del año con una bolsa de premios récord. Los mejores equipos del mundo competirán por el título y millones de dólares en premios.",
+        imagenes: [{ url: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&h=200&fit=crop", descripcion: "E-Sports" }]
+      },
+      {
+        id: 7,
+        titulo: "Realidad Virtual: Los juegos del futuro",
+        texto: "La tecnología VR alcanza nuevos niveles de inmersión. Los desarrolladores están creando experiencias que difuminan la línea entre la realidad y el mundo virtual.",
+        imagenes: [{ url: "https://images.unsplash.com/photo-1592478411213-6153e4ebc696?w=400&h=200&fit=crop", descripcion: "VR Gaming" }]
+      },
+      {
+        id: 8,
+        titulo: "Indie Games: Los títulos independientes que debes jugar",
+        texto: "Una selección de los mejores juegos independientes que han conquistado a críticos y jugadores. Creatividad sin límites y experiencias únicas te esperan.",
+        imagenes: [{ url: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=400&h=200&fit=crop", descripcion: "Indie Games" }]
+      }
+    ];
+    
+    // Cargar noticias inmediatamente sin esperar backend
+    setNoticias(noticiasEjemplo);
+    console.log('Noticias cargadas automáticamente:', noticiasEjemplo.length);
   }, []);
 
   // Funciones de carrusel
@@ -346,6 +413,55 @@ const PaginaPrincipal: React.FC = () => {
         </div>
       </header>
 
+      {/* Carrusel de Noticias */}
+      {noticias.length > 0 && (
+        <section className="productos-similares">
+          <div className="productos-similares-header">
+            <h2>NOTICIAS RECIENTES</h2>
+          </div>
+          
+          <div className="productos-similares-carousel">
+            <button className="carousel-nav-btn prev" onClick={() => setIndexSimilares(Math.max(0, indexSimilares - 1))}>
+              ‹
+            </button>
+            
+            <div className="productos-similares-container">
+              <div 
+                className="productos-similares-track" 
+                style={{ transform: `translateX(-${indexSimilares * 25}%)` }}
+              >
+                {noticias.slice(0, 8).map((noticia) => (
+                  <div key={noticia.id} className="producto-similar-card">
+                    <div className="producto-imagen">
+                      <img 
+                        src={noticia.imagenes[0]?.url || '/default-news.jpg'} 
+                        alt={noticia.titulo}
+                        onError={(e) => {
+                          e.currentTarget.src = '/default-news.jpg';
+                        }}
+                      />
+                    </div>
+                    <div className="producto-info">
+                      <h4>{noticia.titulo}</h4>
+                      <p className="noticia-preview">
+                        {noticia.texto.length > 100 
+                          ? `${noticia.texto.substring(0, 100)}...` 
+                          : noticia.texto
+                        }
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            
+            <button className="carousel-nav-btn next" onClick={() => setIndexSimilares(Math.min(noticias.length - 4, indexSimilares + 1))}>
+              ›
+            </button>
+          </div>
+        </section>
+      )}
+
       {/* Carrusel de juegos */}
       {juegos.length > 0 && (
         <section className="carousel">
@@ -388,7 +504,7 @@ const PaginaPrincipal: React.FC = () => {
             <p>No se han encontrado juegos que coincidan con los filtros seleccionados.</p>
           </div>
         ) : (
-          juegosFiltrados.slice(0, 5).map(juego => (
+          juegosFiltrados.slice(0, 10).map(juego => (
             <div key={juego.id} className="game-card">
               <div className="card-image">
                 <img

@@ -1017,3 +1017,233 @@ header,
 .featured {
   color: #fff !important;
 }
+
+/* ===== CARRUSEL DE PRODUCTOS SIMILARES ===== */
+.productos-similares {
+  margin: 40px 0;
+  padding: 20px;
+  background: var(--bg-secondary);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 102, 0, 0.1);
+}
+
+.productos-similares-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.productos-similares-header h2 {
+  color: var(--text-light);
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+  letter-spacing: 1px;
+}
+
+.ver-todo-btn {
+  background: transparent;
+  border: 1px solid var(--primary-color);
+  color: var(--primary-color);
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all var(--transition-normal);
+}
+
+.ver-todo-btn:hover {
+  background: var(--primary-color);
+  color: white;
+  transform: translateY(-1px);
+}
+
+.productos-similares-carousel {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.carousel-nav-btn {
+  background: var(--bg-tertiary);
+  border: 1px solid rgba(255, 102, 0, 0.3);
+  color: var(--text-light);
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-normal);
+  z-index: 2;
+}
+
+.carousel-nav-btn:hover {
+  background: var(--primary-color);
+  color: white;
+  transform: scale(1.1);
+  box-shadow: 0 4px 15px rgba(255, 102, 0, 0.3);
+}
+
+.carousel-nav-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.productos-similares-container {
+  flex: 1;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.productos-similares-track {
+  display: flex;
+  transition: transform 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
+  gap: 15px;
+}
+
+.producto-similar-card {
+  flex: 0 0 calc(25% - 11.25px);
+  background: var(--bg-card);
+  border-radius: 8px;
+  overflow: hidden;
+  transition: all var(--transition-normal);
+  border: 1px solid rgba(255, 102, 0, 0.1);
+  cursor: pointer;
+}
+
+.producto-similar-card:hover {
+  transform: translateY(-5px);
+  background: var(--bg-card-hover);
+  border-color: var(--primary-color);
+  box-shadow: 0 8px 25px rgba(255, 102, 0, 0.2);
+}
+
+.producto-imagen {
+  position: relative;
+  width: 100%;
+  height: 150px;
+  overflow: hidden;
+}
+
+.producto-imagen img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition-normal);
+}
+
+.producto-similar-card:hover .producto-imagen img {
+  transform: scale(1.05);
+}
+
+.descuento-badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: #28a745;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: bold;
+}
+
+.producto-info {
+  padding: 12px;
+}
+
+.producto-info h4 {
+  color: var(--primary-color);
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.noticia-preview {
+  color: var(--text-light);
+  font-size: 0.8rem;
+  line-height: 1.4;
+  margin: 0;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+.producto-precios {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.precio-original {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  text-decoration: line-through;
+}
+
+.precio-oferta {
+  color: var(--primary-color);
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.precio-normal {
+  color: var(--text-primary);
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+/* Responsive para productos similares */
+@media (max-width: 1200px) {
+  .producto-similar-card {
+    flex: 0 0 calc(33.333% - 10px);
+  }
+}
+
+@media (max-width: 768px) {
+  .productos-similares {
+    margin: 20px 0;
+    padding: 15px;
+  }
+  
+  .productos-similares-header h2 {
+    font-size: 1.2rem;
+  }
+  
+  .carousel-nav-btn {
+    width: 35px;
+    height: 35px;
+    font-size: 1.2rem;
+  }
+  
+  .producto-similar-card {
+    flex: 0 0 calc(50% - 7.5px);
+  }
+  
+  .producto-imagen {
+    height: 120px;
+  }
+}
+
+@media (max-width: 480px) {
+  .productos-similares-header {
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  
+  .producto-similar-card {
+    flex: 0 0 calc(100% - 0px);
+  }
+}
