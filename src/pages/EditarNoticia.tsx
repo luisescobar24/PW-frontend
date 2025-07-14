@@ -6,17 +6,12 @@ const URL_BACKEND = import.meta.env.VITE_BACKEND_URL;
 type Noticia = {
   id: number;
   titulo: string;
-  contenido: string;
-  imagenes: string[];
+  texto: string;
+  imagen?: string | null;
   activo: boolean;
 };
 
-type EditarNoticiaProps = {
-  noticia: Noticia;
-  onSave: () => void;
-};
-
-const EditarNoticia: React.FC<EditarNoticiaProps> = () => {
+const EditarNoticia: React.FC = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [formData, setFormData] = useState<Noticia | null>(null);
@@ -40,44 +35,22 @@ const EditarNoticia: React.FC<EditarNoticiaProps> = () => {
     fetchNoticia();
   }, [id]);
 
-  const [imagenFile, setImagenFile] = useState<File | null>(null);
-
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     if (!formData) return;
-    const target = e.target as HTMLInputElement;
-    const { name, value, type, checked } = target;
-    if (type === 'file') {
-      const file = target.files?.[0] || null;
-      setImagenFile(file);
-    } else if (name === 'imagenes') {
-      setFormData({
-        ...formData,
-        imagenes: value.split(',').map((img) => img.trim()),
-      });
-    } else {
-      setFormData({
-        ...formData,
-        [name]: type === 'checkbox' ? checked : value,
-      });
+    const target = e.target;
+
+    if (target instanceof HTMLInputElement) {
+      const { name, value, type } = target;
+      if (type === 'checkbox') {
+        setFormData({ ...formData, [name]: target.checked });
+      } else {
+        setFormData({ ...formData, [name]: value });
+      }
+    } else if (target instanceof HTMLTextAreaElement) {
+      setFormData({ ...formData, [target.name]: target.value });
     }
-  };
-
-  const CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/<tu_cloud_name>/image/upload';
-  const CLOUDINARY_UPLOAD_PRESET = '<tu_upload_preset>';
-
-  const uploadToCloudinary = async (file: File): Promise<string> => {
-    const data = new FormData();
-    data.append('file', file);
-    data.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
-    const res = await fetch(CLOUDINARY_URL, {
-      method: 'POST',
-      body: data,
-    });
-    if (!res.ok) throw new Error('Error al subir imagen a Cloudinary');
-    const result = await res.json();
-    return result.secure_url;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -86,17 +59,12 @@ const EditarNoticia: React.FC<EditarNoticiaProps> = () => {
     setError('');
     setSuccess('');
     try {
-      let imagenes = formData.imagenes;
-      if (imagenFile) {
-        const url = await uploadToCloudinary(imagenFile);
-        imagenes = [url];
-      }
       const res = await fetch(`${URL_BACKEND}api/noticias/${formData.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ ...formData, imagenes }),
+        body: JSON.stringify(formData),
       });
       if (!res.ok) {
         const data = await res.json();
@@ -106,25 +74,6 @@ const EditarNoticia: React.FC<EditarNoticiaProps> = () => {
       setTimeout(() => navigate('/adminnoticias'), 1000);
     } catch (err: any) {
       setError(err.message || 'No se pudo editar la noticia');
-    }
-  };
-
-  const handleDelete = async () => {
-    if (!formData) return;
-    setError('');
-    setSuccess('');
-    try {
-      const res = await fetch(`${URL_BACKEND}api/noticias/${formData.id}`, {
-        method: 'DELETE',
-      });
-      if (!res.ok) {
-        const data = await res.json();
-        throw new Error(data.message || 'Error al eliminar la noticia');
-      }
-      setSuccess('Noticia eliminada correctamente');
-      setTimeout(() => navigate('/adminnoticias'), 1000);
-    } catch (err: any) {
-      setError(err.message || 'No se pudo eliminar la noticia');
     }
   };
 
@@ -151,30 +100,32 @@ const EditarNoticia: React.FC<EditarNoticiaProps> = () => {
           <div>
             <label>Contenido *</label>
             <textarea
-              name="contenido"
+              name="texto"
               required
-              value={formData.contenido}
+              value={formData.texto}
               onChange={handleChange}
               className="descripcion-input"
               placeholder="Contenido de la noticia"
             />
           </div>
           <div>
-            <label>Imagen</label>
+            <label>URL Imagen</label>
             <input
               name="imagen"
-              type="file"
-              accept="image/*"
-              onChange={handleChange}
-            />
-            <small>Puedes subir una nueva imagen o editar la URL manualmente.</small>
-            <input
-              name="imagenes"
               type="text"
-              value={formData.imagenes.join(', ') || ""}
+              value={formData.imagen || ''}
               onChange={handleChange}
-              placeholder="https://...jpg, https://...png"
+              placeholder="https://...jpg"
             />
+            {formData.imagen && (
+              <div style={{ marginTop: '10px' }}>
+                <img
+                  src={formData.imagen}
+                  alt="Vista previa"
+                  style={{ maxWidth: '100%', maxHeight: '200px' }}
+                />
+              </div>
+            )}
           </div>
           <div>
             <label>
@@ -190,9 +141,6 @@ const EditarNoticia: React.FC<EditarNoticiaProps> = () => {
           <div className="modal-buttons">
             <button type="button" onClick={() => navigate('/adminnoticias')}>
               Cancelar
-            </button>
-            <button type="button" onClick={handleDelete} style={{ background: 'red', color: 'white' }}>
-              Eliminar
             </button>
             <button type="submit">
               Guardar
