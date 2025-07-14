@@ -23,6 +23,14 @@ interface Noticia {
   imagenes: { url: string; descripcion?: string }[];
 }
 
+interface NoticiaBackend {
+  id: number;
+  titulo: string;
+  texto: string;
+  activo: boolean;
+  imagen?: string; // ✅ Es 'imagen' (singular) según el backend
+}
+
 export interface ItemCarrito extends Juego {
   cantidad: number;
 }
@@ -106,62 +114,122 @@ const PaginaPrincipal: React.FC = () => {
     fetchPlataformas();
   }, []);
 
-  // Cargar noticias automáticamente - SIEMPRE MOSTRAR NOTICIAS
+  // Cargar noticias: Sistema híbrido (Backend + 8 noticias fijas)
   useEffect(() => {
-    const noticiasEjemplo: Noticia[] = [
-      {
-        id: 1,
-        titulo: "Nueva actualización de Cyberpunk 2077",
-        texto: "CD Projekt Red ha lanzado una nueva actualización que mejora significativamente el rendimiento del juego y añade nuevas características. Los jugadores pueden esperar una experiencia más fluida y nuevas misiones secundarias.",
-        imagenes: [{ url: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&h=200&fit=crop", descripcion: "Cyberpunk 2077" }]
-      },
-      {
-        id: 2,
-        titulo: "Steam presenta las ofertas de verano 2025",
-        texto: "Steam ha anunciado sus ofertas de verano con descuentos de hasta el 90% en miles de juegos. La promoción incluye títulos AAA y indies populares que no te puedes perder.",
-        imagenes: [{ url: "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=400&h=200&fit=crop", descripcion: "Steam Sale" }]
-      },
-      {
-        id: 3,
-        titulo: "Nuevo trailer de Elden Ring: Shadow of the Erdtree",
-        texto: "FromSoftware revela más detalles sobre la expansión más esperada del año. El DLC promete nuevas áreas, jefes desafiantes y una historia que expandirá el universo de Elden Ring.",
-        imagenes: [{ url: "https://images.unsplash.com/photo-1493711662062-fa541adb3fc8?w=400&h=200&fit=crop", descripcion: "Elden Ring" }]
-      },
-      {
-        id: 4,
-        titulo: "PlayStation 6: Primeros rumores y especificaciones",
-        texto: "Se filtran las primeras especificaciones técnicas de la próxima consola de Sony. Los rumores apuntan a un hardware revolucionario que promete cambiar la industria de los videojuegos.",
-        imagenes: [{ url: "https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?w=400&h=200&fit=crop", descripcion: "PlayStation" }]
-      },
-      {
-        id: 5,
-        titulo: "Nintendo Direct: Anuncios sorprendentes",
-        texto: "Nintendo sorprende a los fans con anuncios inesperados en su último Direct. Nuevos juegos de franquicias queridas y colaboraciones inéditas que emocionan a la comunidad.",
-        imagenes: [{ url: "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=400&h=200&fit=crop", descripcion: "Nintendo" }]
-      },
-      {
-        id: 6,
-        titulo: "E-Sports: Championship Mundial 2025",
-        texto: "Se acerca el torneo más importante del año con una bolsa de premios récord. Los mejores equipos del mundo competirán por el título y millones de dólares en premios.",
-        imagenes: [{ url: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&h=200&fit=crop", descripcion: "E-Sports" }]
-      },
-      {
-        id: 7,
-        titulo: "Realidad Virtual: Los juegos del futuro",
-        texto: "La tecnología VR alcanza nuevos niveles de inmersión. Los desarrolladores están creando experiencias que difuminan la línea entre la realidad y el mundo virtual.",
-        imagenes: [{ url: "https://images.unsplash.com/photo-1592478411213-6153e4ebc696?w=400&h=200&fit=crop", descripcion: "VR Gaming" }]
-      },
-      {
-        id: 8,
-        titulo: "Indie Games: Los títulos independientes que debes jugar",
-        texto: "Una selección de los mejores juegos independientes que han conquistado a críticos y jugadores. Creatividad sin límites y experiencias únicas te esperan.",
-        imagenes: [{ url: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=400&h=200&fit=crop", descripcion: "Indie Games" }]
+    const fetchNoticiasHibridas = async () => {
+      // 8 noticias fijas como base garantizada
+      const noticiasEjemplo: Noticia[] = [
+        {
+          id: 1000, // IDs altos para evitar conflictos
+          titulo: "Nueva actualización de Cyberpunk 2077",
+          texto: "CD Projekt Red ha lanzado una nueva actualización que mejora significativamente el rendimiento del juego y añade nuevas características. Los jugadores pueden esperar una experiencia más fluida y nuevas misiones secundarias.",
+          imagenes: [{ url: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&h=200&fit=crop", descripcion: "Cyberpunk 2077" }]
+        },
+        {
+          id: 1001,
+          titulo: "Steam presenta las ofertas de verano 2025",
+          texto: "Steam ha anunciado sus ofertas de verano con descuentos de hasta el 90% en miles de juegos. La promoción incluye títulos AAA y indies populares que no te puedes perder.",
+          imagenes: [{ url: "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=400&h=200&fit=crop", descripcion: "Steam Sale" }]
+        },
+        {
+          id: 1002,
+          titulo: "Nuevo trailer de Elden Ring: Shadow of the Erdtree",
+          texto: "FromSoftware revela más detalles sobre la expansión más esperada del año. El DLC promete nuevas áreas, jefes desafiantes y una historia que expandirá el universo de Elden Ring.",
+          imagenes: [{ url: "https://images.unsplash.com/photo-1493711662062-fa541adb3fc8?w=400&h=200&fit=crop", descripcion: "Elden Ring" }]
+        },
+        {
+          id: 1003,
+          titulo: "PlayStation 6: Primeros rumores y especificaciones",
+          texto: "Se filtran las primeras especificaciones técnicas de la próxima consola de Sony. Los rumores apuntan a un hardware revolucionario que promete cambiar la industria de los videojuegos.",
+          imagenes: [{ url: "https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?w=400&h=200&fit=crop", descripcion: "PlayStation" }]
+        },
+        {
+          id: 1004,
+          titulo: "Nintendo Direct: Anuncios sorprendentes",
+          texto: "Nintendo sorprende a los fans con anuncios inesperados en su último Direct. Nuevos juegos de franquicias queridas y colaboraciones inéditas que emocionan a la comunidad.",
+          imagenes: [{ url: "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=400&h=200&fit=crop", descripcion: "Nintendo" }]
+        },
+        {
+          id: 1005,
+          titulo: "E-Sports: Championship Mundial 2025",
+          texto: "Se acerca el torneo más importante del año con una bolsa de premios récord. Los mejores equipos del mundo competirán por el título y millones de dólares en premios.",
+          imagenes: [{ url: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&h=200&fit=crop", descripcion: "E-Sports" }]
+        },
+        {
+          id: 1006,
+          titulo: "Realidad Virtual: Los juegos del futuro",
+          texto: "La tecnología VR alcanza nuevos niveles de inmersión. Los desarrolladores están creando experiencias que difuminan la línea entre la realidad y el mundo virtual.",
+          imagenes: [{ url: "https://images.unsplash.com/photo-1592478411213-6153e4ebc696?w=400&h=200&fit=crop", descripcion: "VR Gaming" }]
+        },
+        {
+          id: 1007,
+          titulo: "Indie Games: Los títulos independientes que debes jugar",
+          texto: "Una selección de los mejores juegos independientes que han conquistado a críticos y jugadores. Creatividad sin límites y experiencias únicas te esperan.",
+          imagenes: [{ url: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=400&h=200&fit=crop", descripcion: "Indie Games" }]
+        }
+      ];
+
+      try {
+        // Intentar cargar noticias del backend
+        const response = await axios.get(`${URL_BACKEND}api/noticias`);
+        console.log('Noticias del backend:', response.data);
+        
+        // DEBUG: Ver estructura exacta de cada noticia
+        console.log('DEBUG - Primera noticia completa:', response.data[0]);
+        console.log('DEBUG - Todas las noticias raw:', JSON.stringify(response.data, null, 2));
+        
+        if (response.data && Array.isArray(response.data) && response.data.length > 0) {
+          // DEBUG: Antes del filtro
+          console.log('DEBUG - Cantidad antes del filtro:', response.data.length);
+          
+          // Adaptar formato de noticias del backend al formato del carrusel
+          const noticiasBackend = (response.data as NoticiaBackend[])
+            .filter((noticia: NoticiaBackend) => {
+              console.log(`DEBUG - Noticia ID ${noticia.id}: activo = ${noticia.activo}`);
+              return noticia.activo;
+            }) // Solo noticias activas
+            .map((noticia: NoticiaBackend) => {
+              console.log(`DEBUG - Mapeando noticia: ${noticia.titulo}`);
+              return {
+                id: noticia.id,
+                titulo: noticia.titulo,
+                texto: noticia.texto,
+                imagenes: noticia.imagen 
+                  ? [{ url: noticia.imagen, descripcion: noticia.titulo }]
+                  : [{ url: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=400&h=200&fit=crop", descripcion: "Noticia" }]
+              };
+            });
+
+          // DEBUG: Después del procesamiento
+          console.log('DEBUG - Noticias backend procesadas:', noticiasBackend);
+          console.log('DEBUG - Cantidad después del filtro y mapeo:', noticiasBackend.length);
+
+          // Combinar: Noticias del backend PRIMERO + noticias fijas después
+          const noticiasCompletas = [...noticiasBackend, ...noticiasEjemplo];
+          
+          // DEBUG: Resultado final
+          console.log('DEBUG - Noticias completas finales:', noticiasCompletas);
+          console.log('DEBUG - Títulos de todas las noticias:');
+          noticiasCompletas.forEach((noticia, index) => {
+            console.log(`  ${index + 1}. ID: ${noticia.id} - Título: ${noticia.titulo}`);
+          });
+          
+          setNoticias(noticiasCompletas);
+          console.log(`Sistema híbrido: ${noticiasBackend.length} del admin + 8 fijas = ${noticiasCompletas.length} total`);
+        } else {
+          // Si no hay noticias en el backend, usar solo las fijas
+          setNoticias(noticiasEjemplo);
+          console.log('Solo noticias fijas: 8 noticias cargadas');
+        }
+      } catch (error) {
+        console.error('Error al cargar noticias del backend:', error);
+        // En caso de error, usar solo las noticias fijas
+        setNoticias(noticiasEjemplo);
+        console.log('Fallback a noticias fijas: 8 noticias cargadas');
       }
-    ];
-    
-    // Cargar noticias inmediatamente sin esperar backend
-    setNoticias(noticiasEjemplo);
-    console.log('Noticias cargadas automáticamente:', noticiasEjemplo.length);
+    };
+
+    fetchNoticiasHibridas();
   }, []);
 
   // Funciones de carrusel
@@ -639,4 +707,3 @@ function EditarUsuarioModal({ onClose, correo }: { onClose: () => void; correo: 
 }
 
 // (Eliminado CarruselSimilares porque no se utiliza)
-
