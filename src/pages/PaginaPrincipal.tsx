@@ -461,7 +461,7 @@ function EditarUsuarioModal({ onClose, correo }: { onClose: () => void; correo: 
     }
     try {
       // Actualizar usuario y contraseña en el backend
-      const res = await axios.put(`${URL_BACKEND}api/usuarios/actualizar`, {
+      await axios.put(`${URL_BACKEND}api/usuarios/actualizar`, {
         correo,
         nuevoUsuario: usuario,
         nuevaContrasena: password
@@ -495,46 +495,5 @@ function EditarUsuarioModal({ onClose, correo }: { onClose: () => void; correo: 
   );
 }
 
-// Carrusel de productos similares
-function CarruselSimilares({ juegos }: { juegos: any[] }) {
-  const [index, setIndex] = useState(0);
-  const visible = 5; // Mostrar 5 juegos a la vez
-  const total = juegos.length;
-  const mostrar = juegos.slice(index, index + visible);
-
-  const handlePrev = () => {
-    setIndex(i => Math.max(i - visible, 0));
-  };
-  const handleNext = () => {
-    setIndex(i => Math.min(i + visible, total - visible));
-  };
-
-  return (
-    <div style={{ background: 'rgba(30,30,30,0.95)', borderRadius: '18px', padding: '32px', margin: '32px 0', boxShadow: '0 4px 24px #0006', color: '#fff', position: 'relative' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
-        <h2 style={{ fontSize: '1.4rem', fontWeight: 700, letterSpacing: 1, color: '#ff6600' }}>Noticias Recientes</h2>
-        {/* Eliminado el botón "Ver todo" */}
-      </div>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
-        <button onClick={handlePrev} disabled={index === 0} style={{ background: 'none', border: 'none', color: '#ff6600', fontSize: 32, cursor: 'pointer' }}>&lt;</button>
-        {mostrar.map(j => (
-          <div key={j.id} style={{ background: '#232323', borderRadius: 12, overflow: 'hidden', width: 200, boxShadow: '0 2px 12px #0004', position: 'relative' }}>
-            <img src={j.imagen} alt={j.nombre} style={{ width: '100%', height: 110, objectFit: 'cover' }} />
-            <div style={{ padding: '8px 12px', textAlign: 'left' }}>
-              <div style={{ fontWeight: 700, fontSize: '1.1rem', color: '#fff', marginBottom: 4 }}>{j.nombre}</div>
-              {j.descuento && (
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <span style={{ background: '#7bbf32', color: '#fff', fontWeight: 700, borderRadius: 4, padding: '2px 8px', fontSize: 14 }}>-{j.descuento}%</span>
-                  <span style={{ textDecoration: 'line-through', color: '#aaa', fontSize: 13 }}>S/. {j.precioOriginal}</span>
-                </div>
-              )}
-              <div style={{ color: '#7bbf32', fontWeight: 700, fontSize: 18 }}>S/. {j.precio}</div>
-            </div>
-          </div>
-        ))}
-        <button onClick={handleNext} disabled={index + visible >= total} style={{ background: 'none', border: 'none', color: '#ff6600', fontSize: 32, cursor: 'pointer' }}>&gt;</button>
-      </div>
-    </div>
-  );
-}
+// (Eliminado CarruselSimilares porque no se utiliza)
 
