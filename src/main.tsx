@@ -79,21 +79,8 @@ createRoot(document.getElementById("root")!).render(
       {/* Noticias */}
       <Route path="/adminnoticias" element={<AdminNoticias />} />
       <Route path="/adminnoticias/agregar" element={<AgregarNoticia onClose={() => {}} />} />
-      <Route
-        path="/adminnoticias/editar/:id"
-        element={
-          <EditarNoticia
-            noticia={{
-              id: 0,
-              titulo: '',
-              contenido: '',
-              imagenes: [],
-              activo: false,
-            }}
-            onSave={() => {}}
-          />
-        }
-      />
+      <Route path="/adminnoticias/editar/:id" element={<EditarNoticia />} />
+
       <Route
         path="/adminnoticias/eliminar/:id"
         element={
