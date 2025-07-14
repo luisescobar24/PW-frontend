@@ -60,7 +60,7 @@ const Noticias: React.FC = () => {
           <p>No hay noticias disponibles.</p>
         ) : (
           <div className="carrusel-container">
-            {noticias.slice(0, 5).map((noticia, idx) => (
+            {noticias.slice(0, 5).map(noticia => (
               <div key={noticia.id} className="noticia-carrusel-item">
                 {noticia.imagenes[0] && (
                   <img src={noticia.imagenes[0].url} alt={noticia.titulo} className="noticia-carrusel-img" />

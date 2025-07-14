@@ -179,7 +179,7 @@ const AgregarJuego: React.FC<AgregarJuegoProps> = ({ onClose }) => {
   return (
     <div className="modal">
       <div className="modal-content">
-        <button className="close-btn" onClick={() => onClose ? onClose() : navigate(-1)}>
+        <button className="close-btn" type="button" onClick={onClose}>
           ×
         </button>
         
@@ -388,7 +388,7 @@ const AgregarJuego: React.FC<AgregarJuegoProps> = ({ onClose }) => {
           <div className="modal-buttons">
             <button
               type="button"
-              onClick={() => onClose ? onClose() : navigate(-1)}
+              onClick={onClose}
             >
               Cancelar
             </button>

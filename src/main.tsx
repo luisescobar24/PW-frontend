@@ -88,6 +88,7 @@ createRoot(document.getElementById("root")!).render(
               titulo: '',
               contenido: '',
               imagenes: [],
+              activo: false,
             }}
             onSave={() => {}}
           />

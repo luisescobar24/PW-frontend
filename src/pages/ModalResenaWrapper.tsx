@@ -67,6 +67,7 @@ const ModalResenaWrapper: React.FC = () => {
       juegoNombre={juego.nombre}
       videoUrl={getEmbedUrl(juego.videoUrl)}
       imagenes={juego.imagenes}
+      juegoId={juego.id}
       onClose={() => navigate(-1)}
     />
   );

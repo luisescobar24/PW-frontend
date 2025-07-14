@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import type { FC } from 'react';
 const URL_BACKEND = import.meta.env.VITE_BACKEND_URL;
 
 interface Props {
