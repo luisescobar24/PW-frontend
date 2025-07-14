@@ -1,0 +1,33 @@
+.juego-lista {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+.juego-lista li {
+  color: rgb(255, 144, 39);
+  padding: 1rem;
+  border-radius: 8px;
+  background-color: #1e1e1e;
+  text-align: center;
+  transition: transform 0.2s;
+}
+
+.juego-lista li:hover {
+  transform: scale(1.03);
+}
+
+.ranking {
+  font-size: 2rem;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+img {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+  margin-bottom: 0.5rem;
+}
